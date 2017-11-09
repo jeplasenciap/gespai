@@ -25,7 +25,7 @@ SECRET_KEY = 'l-10!s1yo+szz984==+te0+91k*=5$zrgre&l5g@jj@5wqcwv('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["djangoapps01.osl.ull.es"]
 
 
 # Application definition
@@ -122,7 +122,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
+STATIC_ROOT = "/var/www/gespai/static"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "gespai/static"),]
 
 # Login URL
