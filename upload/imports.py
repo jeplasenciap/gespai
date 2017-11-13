@@ -15,10 +15,10 @@ def import_csv_becarios(csv_file):
     reader = list(csv.reader(csvf))
     errors = []
 
-    for index, row in enumerate(reader[:3]):
+    for index, row in enumerate(reader[3:]):
             try:
                 nueva_titulacion = models.Titulacion.objects.get(codigo=row[10], nombre=row[11])
-            except Titulacion.DoesNotExist:
+            except models.Titulacion.DoesNotExist:
                 nueva_titulacion = models.Titulacion(codigo=row[10], nombre=row[11])
                 nueva_titulacion.full_clean()
                 nueva_titulacion.save()
