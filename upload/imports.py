@@ -12,14 +12,19 @@ from gespai.validation import is_dni
 
 def import_csv_becarios(csv_file):
     csvf = TextIOWrapper(csv_file, encoding="utf-8")
-    reader = csv.reader(csvf)
+    reader = list(csv.reader(csvf))
     errors = []
 
-    for index, row in enumerate(reader):
+    for index, row in enumerate(reader[3:]):
             nueva_titulacion, titulacion_existe = models.Titulacion.objects.get_or_create(codigo=row[10], nombre=row[11])
             if not titulacion_existe:
-                nueva_titulacion.full_clean()
-                nueva_titulacion.save()
+                try:
+                    nueva_titulacion.full_clean()
+                    nueva_titulacion.save()
+                except ValidationError as e:
+                    errors.append((index+1, e))
+                except Exception:
+                    pass
 
             nuevo_becario = models.Becario(orden=row[1],
                                          estado=row[2][0],
@@ -42,10 +47,10 @@ def import_csv_becarios(csv_file):
 
 def import_csv_emplazamientos_plazas(csv_file):
     csvf = TextIOWrapper(csv_file, encoding="utf-8")
-    reader = csv.reader(csvf)
+    reader = list(csv.reader(csvf))
     errors = []
 
-    for index, row in enumerate(reader):
+    for index, row in enumerate(reader[3:]):
 
         # XXX Hay que ignorar la primera línea para no causar problemas
         if index == 0: continue
