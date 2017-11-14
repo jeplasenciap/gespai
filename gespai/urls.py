@@ -19,6 +19,8 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 import notifications.urls
 
+import django_cas_ng.views
+
 from . import forms
 
 urlpatterns = [
@@ -27,7 +29,8 @@ urlpatterns = [
     url(r'^cambios/', include('cambios.urls')),
     url(r'^$', TemplateView.as_view(template_name='gespai/index.html'), name='index'),
     url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
-    url(r'^login/$', auth_views.login, {'authentication_form': forms.LoginForm}),
-    url(r'^logout/$', auth_views.logout, {'next_page': 'index'}),
+    url(r'^login/$', django_cas_ng.views.login, name='cas_ng_login'),
+    url(r'^logout/$', django_cas_ng.views.login, {'next_page': 'index'}, name='cas_ng_logout'),
+    url(r'^callback$', django_cas_ng.views.callback, name='cas_ng_proxy_callback'),
     url('^', include('django.contrib.auth.urls'))
 ]

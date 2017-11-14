@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'notifications',
+    'django_cas_ng',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+UTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas_ng.backends.CASBackend',
+)
+
+CAS_SERVER_URL = 'http://login.ull.es/cas-1/'
+CAS_VERSION = 'CAS_2_SAML_1_0'
 
 ROOT_URLCONF = 'gespai.urls'
 
