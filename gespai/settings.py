@@ -25,7 +25,7 @@ SECRET_KEY = 'l-10!s1yo+szz984==+te0+91k*=5$zrgre&l5g@jj@5wqcwv('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["djangoapps01.osl.ull.es"]
+ALLOWED_HOSTS = ["djangoapps01.osl.ull.es", "gestion.osl.ull.es"]
 
 
 # Application definition
