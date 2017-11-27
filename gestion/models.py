@@ -17,7 +17,10 @@ _NOMBRE_REGEX = r'^(?i)([a-zñÁÉÍÓÚáéíóú. ]{2,60})$'
 # Modelos
 
 class Emplazamiento(models.Model):
-    nombre = models.CharField(max_length=200)
+    
+    _MAX_LENGTH_NOMBRE = 200
+
+    nombre = models.CharField(max_length=_MAX_LENGTH_NOMBRE)
 
     def __str__(self):
         return self.nombre
@@ -126,14 +129,14 @@ class PreferenciasBecario(models.Model):
     class Meta:
         # Un becario solo puede indicar su preferencia para una plaza una sola vez
         # Un becario solo puede indicar un orden de prelacion para cada plaza
-        unique_together = (('becario', 'plaza'), ('becario', 'num_orden'))
+        unique_together = (('becario', 'plaza'), ('becario', 'orden'))
         verbose_name_plural = "preferencias becarios"
     becario = models.ForeignKey(Becario, on_delete=models.CASCADE)
     plaza = models.ForeignKey(Plaza, on_delete=models.CASCADE)
-    num_orden = models.PositiveSmallIntegerField()
+    orden = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return "{0.becario}({0.num_orden}) - {0.plaza}".format(self)
+        return "{0.becario}({0.orden}) - {0.plaza}".format(self)
 
 
 class PlanFormacion(models.Model):
@@ -259,7 +262,7 @@ class HistorialBecarios(models.Model):
 
     def clean(self):
         entradas_historial = HistorialBecarios.objects.filter(dni_becario=self.dni_becario).count()
-        if entradas_historial >= _MAX_CONVOCATORIAS:
+        if entradas_historial >= self._MAX_CONVOCATORIAS:
             raise ValidationError("Este becario ya ha sido asignado en 5 convocatorias.")
 
     def __str__(self):
