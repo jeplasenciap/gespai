@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='gespai/index.html'), name='index'),
     url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
     url(r'^login/$', django_cas_ng.views.login, name='cas_ng_login'),
-    url(r'^logout/$', django_cas_ng.views.login, name='cas_ng_logout'),
+    url(r'^logout/$', django_cas_ng.views.logout, name='cas_ng_logout'),
     url(r'^callback$', django_cas_ng.views.callback, name='cas_ng_proxy_callback'),
     url('^', include('django.contrib.auth.urls'))
 ]
