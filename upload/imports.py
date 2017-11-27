@@ -29,50 +29,52 @@ def import_csv_becarios(csv_file):
     reader = list(csv.reader(csvf))
     errors = []
 
-    for index, row in enumerate(reader[3:]):
+    for index, row in enumerate(reader):
+        if index < 3:
+            continue
+        try:
+            nueva_titulacion = models.Titulacion.objects.get(
+                codigo=row[bdict["codigo_titl"]],
+                nombre=row[bdict["nombre_titl"]])
+        except models.Titulacion.DoesNotExist:
+            nueva_titulacion = models.Titulacion(
+                codigo=row[bdict["codigo_titl"]],
+                nombre=row[bdict["nombre_titl"]])
             try:
-                nueva_titulacion = models.Titulacion.objects.get(
-                    codigo=row[bdict["codigo_titl"]],
-                    nombre=row[bdict["nombre_titl"]])
-            except models.Titulacion.DoesNotExist:
-                nueva_titulacion = models.Titulacion(
-                    codigo=row[bdict["codigo_titl"]],
-                    nombre=row[bdict["nombre_titl"]])
-                try:
-                    nueva_titulacion.full_clean()
-                    nueva_titulacion.save()
-                except ValidationError as e:
-                    errors.append(ValidationError(
-                        _("Error en la línea %(i)s: %(error)s"),
-                        params={"i": index+1, "error": e}
-                    ))
-
-            nuevo_becario = models.Becario(
-                orden=row[bdict["orden"]],
-                estado=row[bdict["estado"]][0],
-                dni=row[bdict["dni"]],
-                apellido1=row[bdict["apellido1"]],
-                apellido2=row[bdict["apellido2"]],
-                nombre=row[bdict["nombre"]],
-                email=row[bdict["email"]],
-                telefono=row[bdict["telefono"]] or None,
-                titulacion=nueva_titulacion,
-                permisos=has_permisos(row[bdict["permisos"]])
-            )
-            try:
-                nuevo_becario.full_clean()
-                nuevo_becario.save()
+                nueva_titulacion.full_clean()
+                nueva_titulacion.save()
             except ValidationError as e:
                 errors.append(ValidationError(
                     _("Error en la línea %(i)s: %(error)s"),
                     params={"i": index+1, "error": e}
                 ))
 
+        nuevo_becario = models.Becario(
+            orden=row[bdict["orden"]],
+            estado=row[bdict["estado"]][0],
+            dni=row[bdict["dni"]],
+            apellido1=row[bdict["apellido1"]],
+            apellido2=row[bdict["apellido2"]],
+            nombre=row[bdict["nombre"]],
+            email=row[bdict["email"]],
+            telefono=row[bdict["telefono"]] or None,
+            titulacion=nueva_titulacion,
+            permisos=has_permisos(row[bdict["permisos"]])
+        )
+        try:
+            nuevo_becario.full_clean()
+            nuevo_becario.save()
+        except ValidationError as e:
+            errors.append(ValidationError(
+                _("Error en la línea %(i)s: %(error)s"),
+                params={"i": index+1, "error": e}
+            ))
+
     if errors:
         raise ValidationError(errors)
 
 cdict = {
-    "pk":      0, #: El id del centro
+    "pk":      0, #: El id de la plaza
     "horario": 1,
     "nombre":  2,
     "dni":     6
@@ -83,10 +85,12 @@ def import_csv_emplazamientos_plazas(csv_file):
     errors = []
     nombre = ""
     
-    for index, row in enumerate(reader[1:]):
+    for index, row in enumerate(reader):
 
+        if index < 1:
+            continue
         if row[cdict["nombre"]]:
-            nombre = cdict["nombre"]
+            nombre = row[cdict["nombre"]]
 
         # Se comprueba si existe ya un Emplazamiento con el mismo nombre. Si no existe,
         # se crea. No se utiliza get_or_create ya que es necesario hacer validación
@@ -104,6 +108,7 @@ def import_csv_emplazamientos_plazas(csv_file):
                 _("Error en la línea %(i)s: %(error)s"),
                 params={"i": index+1, "error": e}
             ))
+            continue
 
         new_plaza = models.Plaza(
             pk=row[cdict["pk"]],
