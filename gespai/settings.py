@@ -25,7 +25,7 @@ SECRET_KEY = 'l-10!s1yo+szz984==+te0+91k*=5$zrgre&l5g@jj@5wqcwv('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["djangoapps01.osl.ull.es", "gestion.osl.ull.es"]
+ALLOWED_HOSTS = ["localhost", "djangoapps01.osl.ull.es", "gestion.osl.ull.es"]
 
 
 # Application definition
@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-UTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'django_cas_ng.backends.CASBackend',
 )
@@ -63,9 +63,10 @@ UTHENTICATION_BACKENDS = (
 CAS_SERVER_URL = 'http://login.ull.es/cas-1/'
 CAS_VERSION = 'CAS_2_SAML_1_0'
 CAS_CREATE_USER = True
+CAS_CREATE_USER_WITH_ID = True
 CAS_IGNORE_REFERRER = True
 CAS_LOGOUT_COMPLETELY = True
-
+SECURE_SSL_REDIRECT = True
 
 ROOT_URLCONF = 'gespai.urls'
 

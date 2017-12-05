@@ -2,5 +2,7 @@ Django==1.11.6
 django-model-utils==3.0.0
 django-notifications-hq==1.3
 jsonfield==2.0.2
+mod-wsgi==4.5.22
+mysqlclient==1.3.12
 pkg-resources==0.0.0
 pytz==2017.2

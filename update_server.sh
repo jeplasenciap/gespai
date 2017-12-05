@@ -1,1 +1,1 @@
-mod_wsgi-express setup-server --user www-data --group www-data --server-root /var/www/gespai --document-root /var/www/gespai --host localhost --port 80 gespai/wsgi.py
+mod_wsgi-express setup-server --https-only --log-level debug --server-name gestion.osl.ull.es --user www-data --group www-data --server-root /var/www/gespai --document-root /var/www/gespai --port 80 --https-port 443 --ssl-certificate-file /etc/letsencrypt/live/gestion.osl.ull.es/fullchain.pem --ssl-certificate-key-file /etc/letsencrypt/live/gestion.osl.ull.es/privkey.pem gespai/wsgi.py
