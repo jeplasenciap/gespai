@@ -22,8 +22,6 @@ import notifications.urls
 
 import django_cas_ng.views
 
-from . import views
-
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^upload/', include('upload.urls')),
@@ -31,8 +29,8 @@ urlpatterns = [
     url(r'^personal/', include('personal.urls')),
     url(r'^$', TemplateView.as_view(template_name='gespai/index.html'), name='index'),
     url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
-    url(r'^login/$', views.login, {'next_page': 'index'}, name='cas_ng_login'),
-    url(r'^logout/$', views.logout, {'next_page': 'index'}, name='cas_ng_logout'),
+    url(r'^login/$', django_cas_ng.views.login, {'next_page': '/'}, name='cas_ng_login'),
+    url(r'^logout/$', django_cas_ng.views.logout, {'next_page': '/'}, name='cas_ng_logout'),
     url(r'^callback$', django_cas_ng.views.callback, name='cas_ng_proxy_callback'),
     url('^', include('django.contrib.auth.urls'))
 ]
