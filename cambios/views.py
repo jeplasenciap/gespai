@@ -136,7 +136,8 @@ def aceptar_cambio(request, id_cambio):
             return redirect('cambios:aceptar', id_cambio=id_cambio)
         return render(request, 'gespai/success.html', {'error': False,
                                                        'mensaje': 'Cambio aplicado con éxito'})
-    return render(request, 'cambios/aceptar_cambio.html', {'cambio': cambio})
+    can_update = datetime.now() > cambio.fecha_cambio
+    return render(request, 'cambios/aceptar_cambio.html', {'cambio': cambio, "cambiable": can_update})
 
 
 @method_decorator(user_passes_test(group_check_all), name='dispatch')
