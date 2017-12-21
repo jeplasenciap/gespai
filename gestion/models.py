@@ -189,7 +189,7 @@ class ResponsableAula(models.Model):
     apellido1 = models.CharField(max_length=200)
     apellido2 = models.CharField(max_length=200, blank=True)
     dni = models.CharField(primary_key=True, validators=[validation.dni_validator],
-                           max_length=8)
+                           max_length=9)
     email = models.EmailField(unique=True)
     telefono = models.CharField(max_length=15,
         validators=[validation.telefono_validator], blank=True, null=True)
@@ -273,6 +273,7 @@ class HistorialBecarios(models.Model):
             raise ValidationError("Este becario ya ha sido asignado en 5 convocatorias.")
 
     def __str__(self):
+<<<<<<< HEAD
         return "{0.dni_becario} - {fecha}".format(self, fecha=self.fecha_asignacion.strftime("%d/%m/%Y"))
 
 
@@ -295,6 +296,28 @@ class AdministracionEmplazamiento(models.Model):
     def __str__(self):
         return "{} (Grupo del CAS:{}; Correo:{})".format(self.emplazamiento, self.nombre_cas, self.nombre_correo)
 
+=======
+        return "(0.dni_becario) - {fecha}".format(self, fecha=self.fecha_asignacion.strftime("%d/%m/%Y"))
+>>>>>>> master
+
+class AdministracionEmplazamiento(models.Model):
+    """
+    Este modelo almacena la relación entre emplazamientos y sus
+    nombres de administración en el CAS y en los alias de correos.
+    """
+
+    _MAX_LENGTH_NOMBRE = 50
+
+    class Meta:
+        verbose_name = "administración emplazamiento"
+        verbose_name_plural = "administración emplazamientos"
+
+    emplazamiento = models.ForeignKey(Emplazamiento)
+    nombre_cas = models.CharField(max_length=_MAX_LENGTH_NOMBRE)
+    nombre_correo = models.CharField(max_length=_MAX_LENGTH_NOMBRE)
+
+    def __str__(self):
+        return "{} (Grupo del CAS:{}; Correo:{})".format(self.emplazamiento, self.nombre_cas, self.nombre_correo)
 
 @receiver(post_save, sender=User)
 def populate_data(sender, instance, created, **kwargs):
