@@ -34,7 +34,8 @@ from email.mime.text import MIMEText
 from fabric.api import *
 from fabric.network import disconnect_all
 from .gespai_admin_settings import (ruta_fichero_cas, ruta_fichero_alias_correo,
-    usuario_conexion, lamp_host, smtp_host, smtp_server_name, direccion_siga)
+    usuario_conexion, lamp_host, smtp_host, smtp_server_name, direccion_siga,
+    password_gesosl)
 
 from gestion.models import Becario, AdministracionEmplazamiento
 
@@ -49,6 +50,7 @@ def dar_alta(correo_alu, plaza):
         :plaza: Una instancia del modelo AdministracionEmplazamiento.
     """
     env.port = "2222"
+    # env.password <-- usar para especificar contraseña
     try:
         execute(aniadir_en_cas, correo_alu, plaza.nombre_cas)
         execute(aniadir_en_correo, correo_alu, plaza.nombre_correo)
@@ -60,7 +62,7 @@ def dar_alta(correo_alu, plaza):
         disconnect_all()
 
 def dar_baja(correo_alu, plaza):
-    env.port = "2222"
+    env.password = ""
     execute(eliminar_en_cas, correo_alu, plaza.nombre_cas)
     execute(eliminar_en_correo, correo_alu, plaza.nombre_correo)
     execute(actualizar_postfix)

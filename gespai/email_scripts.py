@@ -59,37 +59,36 @@ def enviar_correo_becasiga_ldap():
 ############################################################
 asunto_correo_alta= "Bienvenido/a a la beca de aulas SIGA"
 texto_correo_alta= """
-Hola,
+<p>Hola,</p>
 
-Te informamos que has sido dado de alta como becario/a de aula de informática.
+<p>Te informamos que has sido dado de alta como becario/a de aula de informática.</p>
 
-Para acceder como administrador de los equipos de las aulas SIGA, así como al Wiki de Aulas, debes usar tu alu institucional (alu0100XXXXXX).
+<p>Para acceder como administrador de los equipos de las aulas SIGA, así como al Wiki de Aulas, debes usar tu alu institucional ({}).</p>
 
-Wiki de aulas: https://aulas.ull.es/inicio
+<p>Wiki de aulas: https://aulas.ull.es/inicio</p>
 
-En la sección de la Documentación general de la Wiki dispones de toda la información relacionada con la gestión de las aulas: https://aulas.ull.es/documentacion/inicio
+<p>En la sección de la Documentación general de la Wiki dispones de toda la información relacionada con la gestión de las aulas: https://aulas.ull.es/documentacion/inicio</p>
 
-En la Wiki, en la sección del centro que has sido asignado/a, añade tu nombre, e-mail institucional (alu0100XXXXXX) y horario en el que estarás disponible en el aula.
+<p>En la Wiki, en la sección del centro que has sido asignado/a, añade tu nombre, e-mail institucional ({}) y horario en el que estarás disponible en el aula.</p>
 
-También hay disponible un formulario de incidencias mediante el cual debes informarnos de cualquier problema que ocurra en el aula: http://aulas.ull.es/incidencias/
+<p>También hay disponible un formulario de incidencias mediante el cual debes informarnos de cualquier problema que ocurra en el aula: http://aulas.ull.es/incidencias/</p>
 
-Cualquier duda, nos puedes contactar a siga@osl.ull.es
+<p>Cualquier duda, nos puedes contactar a siga@osl.ull.es</p>
 
-<b>Importante:</b> No utilices cuentas de correo que no sea la de tu alu institucional.
+<p><b>Importante:</b> No utilices cuentas de correo que no sea la de tu alu institucional.</p>
 
-Un saludo.
+<p>Un saludo.</p>
 """
 
-def enviar_correo_becario_alta():
+def enviar_correo_becario_alta(direccion_becario):
     with smtplib.SMTP("localhost") as server:
         server.starttls()
-        direccion_becario = "alu0100791327@ull.edu.es" 
-        mensaje = MIMEText(texto_correo_alta)
-        mensaje["From"] = direccion_remitente_osl
+        mensaje = MIMEText(texto_correo_alta.format(direccion_becario.replace("@ull.edu.es", ""), direccion_becario), "html")
+        mensaje["From"] = '"Oficina de Software Libre" <' + direccion_remitente_osl + '>'
         mensaje["To"] = direccion_becario
         mensaje["Subject"] = asunto_correo_alta
-        mensaje.set_encoding("UTF-8")
+        mensaje.set_charset("UTF-8")
         server.sendmail(
             from_addr = direccion_remitente_osl,
-            to_addrs = [direccion_becario, direccion_siga],
+            to_addrs = [direccion_becario],
             msg = mensaje.as_string())

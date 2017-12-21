@@ -14,9 +14,10 @@ def cambio_estado(sender, **kwargs):
     # En caso de que ya haya una notificación para el cambio que se va a guardar
     # (si se modifica un cambio ya existente) se borra la notificación y se genera una nueva
     try:
-        notificacion = Notification.objects.get(
+        notificaciones = Notification.objects.filter(
             action_object_object_id=instance.pk)
-        notificacion.delete()
+        for notificacion in notificaciones:
+            notificacion.delete()
     except Notification.DoesNotExist:
         pass
     if instance.plaza:

@@ -32,7 +32,7 @@ class CambioBecarioForm(forms.ModelForm):
     )
 
     plaza = forms.ModelChoiceField(
-        label="Plaza de cambio", queryset=models.Plaza.objects.all(), required=False, widget=forms.Select(attrs={'class': 'form-control'}))
+        label="Plaza de cambio", empty_label="Sin plaza", queryset=models.Plaza.objects.all(), required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     estado_cambio = forms.ChoiceField(label="Estado de cambio", choices=ESTADOS, widget=forms.Select(attrs={'class': 'form-control'}))
     fecha_cambio = forms.DateField(label="Fecha de cambio", widget=forms.SelectDateWidget(attrs={'class': 'form-control'}),
         initial=datetime.date.today, required=False)
@@ -51,5 +51,5 @@ class CambioBecarioForm(forms.ModelForm):
             self.add_error('plaza', 'Un becario no puede ser trasladado a su misma plaza.')
         if estado == 'A' and self.becario.estado == 'A':
             self.add_error('estado_cambio', 'Si desea asignar al becario a otra plaza, seleccione Traslado como estado de cambio.')
-        if fecha < datetime.date.today():
-            self.add_error('fecha_cambio', 'Seleccione una fecha en el futuro.')
+        #if fecha < datetime.date.today():
+        #    self.add_error('fecha_cambio', 'Seleccione una fecha en el futuro.')
