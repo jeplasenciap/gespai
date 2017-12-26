@@ -288,7 +288,7 @@ class AdministracionEmplazamiento(models.Model):
         verbose_name = "administración emplazamiento"
         verbose_name_plural = "administración emplazamientos"
 
-    emplazamiento = models.ForeignKey(Emplazamiento)
+    emplazamiento = models.OneToOneField(Emplazamiento, primary_key=True)
     nombre_cas = models.CharField(max_length=_MAX_LENGTH_NOMBRE)
     nombre_correo = models.CharField(max_length=_MAX_LENGTH_NOMBRE)
 

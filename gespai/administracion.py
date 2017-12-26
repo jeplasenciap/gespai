@@ -62,7 +62,7 @@ def dar_alta(correo_alu, plaza):
         disconnect_all()
 
 def dar_baja(correo_alu, plaza):
-    env.password = ""
+    env.password = password_gesosl
     execute(eliminar_en_cas, correo_alu, plaza.nombre_cas)
     execute(eliminar_en_correo, correo_alu, plaza.nombre_correo)
     execute(actualizar_postfix)
@@ -118,7 +118,7 @@ def aniadir_en_cas(correo_alu, plaza):
 
 @task
 @hosts(lamp_host)
-@with_settings(user=usuario_conexion, warn_only=True)
+@with_settings(user=usuario_conexion, password=password_gesosl, warn_only=True)
 def eliminar_en_cas(correo_alu, plaza):
     alu = correo_alu.replace("@ull.edu.es", "")
     sudo(r"""sed -i -r "s/(, )?'{}'//g" {}""".format(alu, ruta_fichero_cas))
@@ -136,7 +136,7 @@ def aniadir_en_correo(correo_alu, plaza):
 
 @task
 @hosts(smtp_host)
-@with_settings(user=usuario_conexion, warn_only=True)
+@with_settings(user=usuario_conexion, password=password_gesosl, warn_only=True)
 def eliminar_en_correo(correo_alu, plaza):
     sudo(r"""sed -r -i "s/(,\s)?{}//" {}""".format(correo_alu, ruta_fichero_alias_correo))
     sudo(r"""sed -i -r "s/(\s+), /\1/g" {}""".format(ruta_fichero_alias_correo))

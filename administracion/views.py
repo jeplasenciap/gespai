@@ -41,7 +41,7 @@ def autorizar_cambio(request, pk_cambio):
             if cambio.estado_cambio == "A":
                 dar_alta(cambio.becario.email, models.AdministracionEmplazamiento.objects.get(emplazamiento=cambio.plaza.emplazamiento))
             elif cambio.estado_cambio == "R":
-                dar_baja(cambio.becario.email, models.AdministracionEmplazamiento.objects.get(emplazamiento=cambio.becario.plaza_asignada.emplazamiento))
+                dar_baja(cambio.becario.email, models.AdministracionEmplazamiento.objects.get(emplazamiento = cambio.becario.plaza_asignada.emplazamiento))
             elif cambio.estado_cambio == "T":
                 cambiar(cambio.becario.email,
                     models.AdministracionEmplazamiento.objects.get(emplazamiento=cambio.becario.plaza_asignada.emplazamiento),
